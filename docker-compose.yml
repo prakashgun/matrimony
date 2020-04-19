@@ -23,7 +23,7 @@ services:
     environment:
       - POSTGRES_USER=app
       - POSTGRES_PASSWORD=mydbpass
-      - POSTGRES_DB=matrimony
+      - POSTGRES_DB_NAME=matrimony
 
 volumes:
   postgres_data:
