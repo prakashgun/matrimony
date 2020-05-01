@@ -4,23 +4,28 @@ services:
   app:
     build:
       context: .
-    command: python manage.py runserver 0.0.0.0:8000
+    command: "python manage.py wait_for_db &&
+              python manage.py migrate &&
+              python manage.py runserver 0.0.0.0:8000"
     volumes:
       - ./app:/app
     ports:
       - 8000:8000
+    environment:
+      - DB_HOST=db
+      - DB_NAME=app
+      - DB_USER=postgres
+      - DB_PASS=mydbpass
     depends_on:
       - db
   db:
-    image: postgres:12.2-alpine
+    image: postgres:10-alpine
     volumes:
       - postgres_data:/var/lib/postgresql/data/
-    ports:
-      - 5432:5432
     environment:
-      - POSTGRES_USER=app
+      - POSTGRES_DB=app
+      - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=mydbpass
-      - POSTGRES_DB_NAME=matrimony
 
 volumes:
   postgres_data:
