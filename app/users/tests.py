@@ -99,5 +99,4 @@ class UserPublicApiTest(TestCase):
         }
 
         res = self.client.post(Utilities.CREATE_USER_URL, data=payload)
-        self.assertEqual(res.data, status.HTTP_400_BAD_REQUEST)
         self.assertEqual(res.status_code, status.HTTP_400_BAD_REQUEST)
