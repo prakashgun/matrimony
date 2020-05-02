@@ -24,7 +24,7 @@ SECRET_KEY = '(-35(b61in19uyog=nl6*97dp0b($m0$y0=guq=%f6+yo731$='
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['0.0.0.0', 'localhost', '127.0.0.1']
 
 # Application definition
 
@@ -40,7 +40,7 @@ INSTALLED_APPS = [
     'rest_framework',
 
     # Applicaton
-    'user',
+    'users',
     'core'
 ]
 
@@ -123,4 +123,4 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
-AUTH_USER_MODEL = 'user.User'
+AUTH_USER_MODEL = 'users.User'
