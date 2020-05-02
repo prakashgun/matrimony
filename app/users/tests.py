@@ -13,6 +13,34 @@ class Utilities:
         return get_user_model().objects.create(**params)
 
 
+class ModelTests(TestCase):
+
+    def test_create_user_successful(self):
+        username = '9876543210'
+        password = 'test'
+        email = 'test@example.com'
+
+        user = get_user_model().objects.create_user(
+            username=username,
+            password=password,
+            email=email
+        )
+
+        self.assertEqual(user.email, email)
+        self.assertTrue(user.check_password(password))
+
+    # def test_new_user_invalid_email(self):
+    #     """Test creating user with invalid email raises error"""
+    #     username = '9876543210'
+    #     password = 'test'
+    #     email = 'test'
+    #
+    #     with self.assertRaises(ValueError):
+    #         get_user_model().objects.create_user(username=username,
+    #                                              password=password,
+    #                                              email=email)
+
+
 class UserPublicApiTest(TestCase):
 
     def setUp(self):
@@ -60,4 +88,16 @@ class UserPublicApiTest(TestCase):
         }
 
         res = self.client.post(Utilities.CREATE_USER_URL, data=payload)
+        self.assertEqual(res.status_code, status.HTTP_400_BAD_REQUEST)
+
+    def test_validate_email(self):
+        """Validate that username is ten digit"""
+        payload = {
+            'username': '9876543210',
+            'password': 'test',
+            'email': 'wrong_email'
+        }
+
+        res = self.client.post(Utilities.CREATE_USER_URL, data=payload)
+        self.assertEqual(res.data, status.HTTP_400_BAD_REQUEST)
         self.assertEqual(res.status_code, status.HTTP_400_BAD_REQUEST)

@@ -3,15 +3,7 @@ from django.utils.translation import gettext_lazy as _
 from rest_framework import serializers
 
 
-def phone_number(phone):
-    if not isinstance(phone, str) or len(phone) != 10:
-        raise serializers.ValidationError(_('Wrong phone number'))
-
-    return phone
-
-
 class UserSerializer(serializers.ModelSerializer):
-    username = serializers.CharField(validators=[phone_number])
     password = serializers.CharField(write_only=True)
 
     class Meta:
@@ -24,3 +16,10 @@ class UserSerializer(serializers.ModelSerializer):
         user.save()
 
         return user
+
+    def validate_username(self, value):
+        """Check username is a phone number"""
+        if not isinstance(value, str) or len(value) != 10:
+            raise serializers.ValidationError(_('Wrong value number'))
+
+        return value
