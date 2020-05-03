@@ -1,3 +1,6 @@
+from datetime import datetime
+
+from django.contrib.auth import get_user_model
 from django.test import TestCase
 
 from . import models
@@ -11,6 +14,9 @@ class ModelTests(TestCase):
         )
         self.language = models.Language.objects.create(
             name="Malayalam"
+        )
+        self.language2 = models.Language.objects.create(
+            name="English"
         )
         self.physical_status = models.PhysicalStatus.objects.create(
             name="Normal"
@@ -154,63 +160,48 @@ class ModelTests(TestCase):
     def test_family_status_str(self):
         self.assertEqual(str(self.family_status), self.family_status.name)
 
-    # def test_profile_str(self):
-    #     profile = models.Profile.objects.create(
-    #         user=get_user_model().objects.create(
-    #             username='9876543210', password='test',
-    #             email='test@example.com'
-    #         ),
-    #         dob=datetime.strptime('1995-08-11', '%Y-%m-%d').date(),
-    #         about='Software Engineer working in Bangalore',
-    #         height=182,
-    #         weight=70,
-    #         marital_status=models.Profile.MARITAL_STATUS[0],
-    #         mother_tounge=models.Profile.LANGUAGES[0],
-    #         physical_status=models.Profile.PHYSICAL_STATUS[0],
-    #         profile_created_by=models.Profile.PROFILE_CREATED_BY[0],
-    #         eating_habit=models.Profile.EATING_HAIBTS[0],
-    #         drinking_habits=models.Profile.DRINKING_HABITS[0],
-    #         smoking_habits=models.Profile.SMOKING_HABITS[0],
-    #         education=models.Profile.RELIGION[0],
-    #         education_institution=models.Profile.RELIGION[0],
-    #         occupation=models.Profile.RELIGION[0],
-    #         organization=models.Profile.RELIGION[0],
-    #         employment_type=models.Profile.RELIGION[0],
-    #         annual_income=models.Profile.RELIGION[0],
-    #         country=models.Profile.RELIGION[0],
-    #         state=models.Profile.RELIGION[0],
-    #         city=models.Profile.RELIGION[0],
-    #         citizenship=models.Profile.RELIGION[0],
-    #         family_value=models.Profile.RELIGION[0],
-    #         family_type=models.Profile.RELIGION[0],
-    #         family_status=models.Profile.RELIGION[0],
-    #         father_occupation=models.Profile.RELIGION[0],
-    #         mother_occupation=models.Profile.RELIGION[0],
-    #         no_of_brothers=models.Profile.RELIGION[0],
-    #         brothers_married=models.Profile.RELIGION[0],
-    #         no_of_sisters=models.Profile.RELIGION[0],
-    #         sisters_married=models.Profile.RELIGION[0],
-    #         ancestral_origin='Parsi',
-    #         about_family='Middle class family staying in Bangalore',
-    #         hobbies=models.Profile.RELIGION[0],
-    #         interests=models.Profile.RELIGION[0],
-    #         favourite_music=models.Profile.RELIGION[0],
-    #         favourite_reads=models.Profile.RELIGION[0],
-    #         preferred_movies=models.Profile.RELIGION[0],
-    #         sports_and_fitness=models.Profile.RELIGION[0],
-    #         favourite_cuisine=models.Profile.RELIGION[0],
-    #         preferred_dress_style=models.Profile.RELIGION[0],
-    #         spoken_languages=models.Profile.RELIGION[0],
-    #         pref_age=models.Profile.RELIGION[0],
-    #         pref_height=models.Profile.RELIGION[0],
-    #         pref_martital_status=models.Profile.RELIGION[0],
-    #         pref_phy=models.Profile.RELIGION[0],
-    #         hobbies=models.Profile.RELIGION[0],
-    #         hobbies=models.Profile.RELIGION[0],
-    #         hobbies=models.Profile.RELIGION[0],
-    #         hobbies=models.Profile.RELIGION[0],
-    #         hobbies=models.Profile.RELIGION[0],
-    #         hobbies=models.Profile.RELIGION[0],
-    #         hobbies=models.Profile.RELIGION[0],
-    #
-    #     )
+    def test_profile_str(self):
+        profile = models.Profile.objects.create(
+            user=get_user_model().objects.create(
+                username='9876543210', password='test',
+                email='test@example.com'
+            ),
+            dob=datetime.strptime('1995-08-11', '%Y-%m-%d').date(),
+            about='Software Engineer working in Bangalore',
+            height=182,
+            weight=70,
+            marital_status=self.marital_status,
+            mother_tongue=self.language,
+            physical_status=self.physical_status,
+            created_by=self.created_by,
+            eating_habit=self.eating_habit,
+            drinking_habit=self.drinking_habit,
+            smoking_habit=self.smoking_habit,
+            education=self.education,
+            education_institution='CMS College of Science and Commerce',
+            occupation=self.occupation,
+            occupation_in_detail='Software Programmer',
+            organization='Spi Global',
+            employed_in=self.employed_in,
+            currency_type=self.currency_type,
+            annual_income=10,
+            country=self.country,
+            state=self.state,
+            city=self.city,
+            citizenship=self.country,
+            family_value=self.family_value,
+            family_type=self.family_type,
+            family_status=self.family_status,
+            father_occupation=self.occupation,
+            mother_occupation=self.occupation,
+            no_of_brothers=1,
+            brothers_married=None,
+            no_of_sisters=1,
+            sisters_married=None,
+            ancestral_origin='Parsi',
+            about_family='Middle class family staying in Bangalore'
+        )
+
+        profile.spoken_languages.set([self.language, self.language2])
+
+        self.assertEqual(str(profile), profile.about)
