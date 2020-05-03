@@ -41,7 +41,8 @@ INSTALLED_APPS = [
 
     # Applicaton
     'users',
-    'core'
+    'core',
+    'matrimony'
 ]
 
 MIDDLEWARE = [

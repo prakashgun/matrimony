@@ -12,6 +12,11 @@ class Utilities:
     def create_user(**params):
         return get_user_model().objects.create(**params)
 
+    @staticmethod
+    def sample_user():
+        return Utilities.create_user(username='9876543210', password='test',
+                                     email='test@example.com')
+
 
 class ModelTests(TestCase):
 
@@ -28,17 +33,6 @@ class ModelTests(TestCase):
 
         self.assertEqual(user.email, email)
         self.assertTrue(user.check_password(password))
-
-    # def test_new_user_invalid_email(self):
-    #     """Test creating user with invalid email raises error"""
-    #     username = '9876543210'
-    #     password = 'test'
-    #     email = 'test'
-    #
-    #     with self.assertRaises(ValueError):
-    #         get_user_model().objects.create_user(username=username,
-    #                                              password=password,
-    #                                              email=email)
 
 
 class UserPublicApiTest(TestCase):
