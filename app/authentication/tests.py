@@ -6,7 +6,7 @@ from rest_framework.test import APIClient
 
 
 class Utilities:
-    CREATE_USER_URL = reverse('authentication:users')
+    USERS_URL = reverse('authentication:users')
 
     @staticmethod
     def create_user(**params):
@@ -48,7 +48,7 @@ class UserPublicApiTest(TestCase):
             'email': 'test@example.com'
         }
 
-        res = self.client.post(Utilities.CREATE_USER_URL, data=payload)
+        res = self.client.post(Utilities.USERS_URL, data=payload)
         self.assertEqual(res.status_code, status.HTTP_201_CREATED)
         user = get_user_model().objects.get(**res.data)
         self.assertTrue(user.check_password(payload['password']))
@@ -70,7 +70,7 @@ class UserPublicApiTest(TestCase):
             'email': 'test@example.com'
         }
 
-        res = self.client.post(Utilities.CREATE_USER_URL, payload)
+        res = self.client.post(Utilities.USERS_URL, payload)
         self.assertEqual(res.status_code, status.HTTP_400_BAD_REQUEST)
 
     def test_validate_username(self):
@@ -81,7 +81,7 @@ class UserPublicApiTest(TestCase):
             'email': 'test@example.com'
         }
 
-        res = self.client.post(Utilities.CREATE_USER_URL, data=payload)
+        res = self.client.post(Utilities.USERS_URL, data=payload)
         self.assertEqual(res.status_code, status.HTTP_400_BAD_REQUEST)
 
     def test_validate_email(self):
@@ -92,5 +92,12 @@ class UserPublicApiTest(TestCase):
             'email': 'wrong_email'
         }
 
-        res = self.client.post(Utilities.CREATE_USER_URL, data=payload)
+        res = self.client.post(Utilities.USERS_URL, data=payload)
         self.assertEqual(res.status_code, status.HTTP_400_BAD_REQUEST)
+
+    def test_list_users(self):
+        """Test listing of users"""
+        user = Utilities.sample_user()
+        res = self.client.get(Utilities.USERS_URL)
+        self.assertEqual(res.status_code, status.HTTP_200_OK)
+        self.assertEqual(user.username, res.data[0]['username'])

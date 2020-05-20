@@ -1,4 +1,5 @@
 from django.contrib.auth import get_user_model
+from django.contrib.auth.models import Group
 from django.utils.translation import gettext_lazy as _
 from rest_framework import serializers
 
@@ -23,3 +24,9 @@ class UserSerializer(serializers.ModelSerializer):
             raise serializers.ValidationError(_('Wrong value number'))
 
         return value
+
+
+class GroupSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Group
+        fields = ('name',)

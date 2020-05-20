@@ -5,5 +5,5 @@ from . import views
 app_name = 'authentication'
 
 urlpatterns = [
-    path('users/', views.CreateUserView.as_view(), name='users')
+    path('users/', views.UserList.as_view(), name='users')
 ]
