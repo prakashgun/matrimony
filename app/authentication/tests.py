@@ -6,7 +6,7 @@ from rest_framework.test import APIClient
 
 
 class Utilities:
-    CREATE_USER_URL = reverse('users:create')
+    CREATE_USER_URL = reverse('authentication:users')
 
     @staticmethod
     def create_user(**params):
