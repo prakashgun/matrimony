@@ -114,3 +114,12 @@ class UserPublicApiTest(TestCase):
         self.assertEqual(len(res.data), 2)
         self.assertEqual(res.data[0]['name'], group1.name)
         self.assertEqual(res.data[1]['name'], group2.name)
+
+    def test_user_detail(self):
+        """Test individual user detail retrieving"""
+        user = Utilities.sample_user()
+
+        res = self.client.get(
+            reverse('authentication:user-detail', args=(user.id,))
+        )
+        self.assertEqual(res.data['username'], user.username)

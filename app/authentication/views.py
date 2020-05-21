@@ -10,6 +10,11 @@ class UserList(generics.ListCreateAPIView):
     serializer_class = UserSerializer
 
 
+class UserDetail(generics.RetrieveAPIView):
+    queryset = get_user_model().objects.all()
+    serializer_class = UserSerializer
+
+
 class GroupList(generics.ListAPIView):
     queryset = Group.objects.all()
     serializer_class = GroupSerializer
