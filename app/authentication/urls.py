@@ -1,9 +1,10 @@
 from django.urls import path
 
-from . import views
+from .views import UserList, GroupList
 
 app_name = 'authentication'
 
 urlpatterns = [
-    path('users/', views.UserList.as_view(), name='users')
+    path('users/', UserList.as_view(), name='users'),
+    path('groups/', GroupList.as_view(), name='groups'),
 ]

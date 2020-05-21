@@ -1,4 +1,5 @@
 from django.contrib.auth import get_user_model
+from django.contrib.auth.models import Group
 from django.test import TestCase
 from django.urls import reverse
 from rest_framework import status
@@ -7,6 +8,7 @@ from rest_framework.test import APIClient
 
 class Utilities:
     USERS_URL = reverse('authentication:users')
+    GROUPS_URL = reverse('authentication:groups')
 
     @staticmethod
     def create_user(**params):
@@ -101,3 +103,14 @@ class UserPublicApiTest(TestCase):
         res = self.client.get(Utilities.USERS_URL)
         self.assertEqual(res.status_code, status.HTTP_200_OK)
         self.assertEqual(user.username, res.data[0]['username'])
+
+    def test_list_groups(self):
+        """Test listing of user groups"""
+        group1 = Group.objects.create(name="Group 1")
+        group2 = Group.objects.create(name="Group 2")
+
+        res = self.client.get(Utilities.GROUPS_URL)
+        self.assertEqual(res.status_code, status.HTTP_200_OK)
+        self.assertEqual(len(res.data), 2)
+        self.assertEqual(res.data[0]['name'], group1.name)
+        self.assertEqual(res.data[1]['name'], group2.name)
